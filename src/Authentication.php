@@ -4,7 +4,7 @@ namespace Scaliter;
 
 class Authentication
 {
-    public static function generateKey(int $length = 16)
+    public static function generateKey(int $length = 16): string
     {
         $indicum = '';
         $characters = str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
@@ -12,21 +12,21 @@ class Authentication
             $indicum .= $characters[random_int(0, 61)];
         return substr($indicum, 0, $length);
     }
-    public static function generateCode(string $secret, int $delay = 60)
+    public static function generateCode(string $secret, int $delay = 60): string
     {
         $time = ceil(time() / $delay);
         return self::getCode($time, $secret);
     }
-    public static function verifyCode(string $secret, string $code, int $delay = 60)
+    public static function verifyCode(string $secret, string $code, int $delay = 60):bool
     {
         $code = trim($code);
         $time = ceil(time() / $delay) - 1;
-        for ($i = 0; $i < 3; $i++) {
-            if ($code == self::getCode($time + $i, $secret)) return true;
-        }
+        for ($i = 0; $i < 3; $i++)
+            if ($code == self::getCode($time + $i, $secret))
+                return true;
         return false;
     }
-    private static function getCode(int $time, string $secret)
+    private static function getCode(int $time, string $secret):string
     {
         return substr(preg_replace('/[^0-9]+/', '', hash("sha256", $time . $secret) . "987123"), 0, 6);
     }
