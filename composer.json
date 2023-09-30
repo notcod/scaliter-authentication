@@ -1,0 +1,10 @@
+{
+    "name": "scaliter/authentication",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Scaliter\\": "src/"
+        }
+    },
+    "license": "MIT"
+}
